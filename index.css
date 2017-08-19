@@ -6,9 +6,12 @@ body, html {
 }
 
 .player {
-  height: 50px;
-  width: 50px;
   background-color: red;
+  position: absolute;
+}
+
+.wall {
+  background-color: black;
   position: absolute;
 }
 
