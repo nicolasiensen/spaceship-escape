@@ -1,5 +1,5 @@
 var step = 40;
-var sceneSize = 10;
+var sceneSize = 50;
 
 function moveElement(element, top, left, step, colliders) {
   var oldTopPosition = element.style.top;
@@ -27,11 +27,18 @@ function isColliding(element, colliders) {
   return false;
 }
 
+function centerCamera(scene, player) {
+  scene.style.left = (document.body.clientWidth/2) - parseInt(player.style.left) + "px";
+  scene.style.top = (document.body.clientHeight/2) - parseInt(player.style.top) + "px";
+}
+
 window.onload = function() {
   var scene = document.createElement("div");
   scene.className = "scene";
   scene.style.height = step * sceneSize + "px";
   scene.style.width = step * sceneSize + "px";
+  scene.style.top = "0px"
+  scene.style.left = "0px"
   document.body.appendChild(scene);
 
   var walls = [];
@@ -82,19 +89,25 @@ window.onload = function() {
   player.style.left = step + "px";
   scene.appendChild(player);
 
+  centerCamera(scene, player)
+
   window.addEventListener("keydown", function(e) {
     switch (e.keyCode) {
       case 38:
         moveElement(player, -1, 0, step, walls)
+        centerCamera(scene, player)
         break;
       case 39:
         moveElement(player, 0, 1, step, walls)
+        centerCamera(scene, player)
         break;
       case 40:
         moveElement(player, 1, 0, step, walls)
+        centerCamera(scene, player)
         break;
       case 37:
         moveElement(player, 0, -1, step, walls)
+        centerCamera(scene, player)
         break;
       default:
         break;
