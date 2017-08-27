@@ -1,5 +1,6 @@
 var step = 40;
 var sceneSize = 50;
+var sightRadius = step * 5;
 
 function moveElement(element, top, left, step, colliders) {
   var oldTopPosition = element.style.top;
@@ -32,82 +33,91 @@ function centerCamera(scene, player) {
   scene.style.top = (document.body.clientHeight/2) - parseInt(player.style.top) + "px";
 }
 
+function createElement(className, height, width, x, y) {
+  var element = document.createElement("div");
+  element.className = className;
+  element.style.height = height + "px";
+  element.style.width = width + "px";
+  element.style.left = x + "px";
+  element.style.top = y + "px";
+  return element;
+}
+
+function getDistance (element1, element2) {
+  var element1X = parseInt(element1.style.left);
+  var element1Y = parseInt(element1.style.top);
+  var element2X = parseInt(element2.style.left);
+  var element2Y = parseInt(element2.style.top);
+  return Math.sqrt(Math.pow(element1X - element2X, 2) + Math.pow(element1Y - element2Y, 2));
+}
+
+function updateObjectsVisibility(element, objects, sightRadius) {
+  for (var i = 0; i < objects.length; i++) {
+    var distance = getDistance(element, objects[i]);
+
+    if (distance > sightRadius) {
+      objects[i].style.opacity = 0;
+    } else {
+      objects[i].style.opacity = 1 - (distance/sightRadius);
+    }
+  }
+}
+
 window.onload = function() {
-  var scene = document.createElement("div");
-  scene.className = "scene";
-  scene.style.height = step * sceneSize + "px";
-  scene.style.width = step * sceneSize + "px";
-  scene.style.top = "0px"
-  scene.style.left = "0px"
+  var scene = createElement("scene", step * sceneSize, step * sceneSize, 0, 0)
   document.body.appendChild(scene);
 
   var walls = [];
 
   for (var i = 1; i < sceneSize - 1; i++) {
-    var wall = document.createElement("div");
-    wall.className = "wall";
-    wall.style.height = step + "px";
-    wall.style.width = step + "px";
-    wall.style.top = "0px";
-    wall.style.left = i * step + "px";
+    // Create north walls
+    var wall = createElement("wall", step, step, i * step, 0);
     scene.appendChild(wall);
     walls.push(wall);
 
-    var wall = document.createElement("div");
-    wall.className = "wall";
-    wall.style.height = step + "px";
-    wall.style.width = step + "px";
-    wall.style.top = step * (sceneSize - 1) + "px";
-    wall.style.left = i * step + "px";
+    // Create south walls
+    var wall = createElement("wall", step, step, i * step, step * (sceneSize - 1));
     scene.appendChild(wall);
     walls.push(wall);
 
-    var wall = document.createElement("div");
-    wall.className = "wall";
-    wall.style.height = step + "px";
-    wall.style.width = step + "px";
-    wall.style.top = i * step + "px";
-    wall.style.left = "0px";
+    // Create west walls
+    var wall = createElement("wall", step, step, 0, i * step);
     scene.appendChild(wall);
     walls.push(wall);
 
-    var wall = document.createElement("div");
-    wall.className = "wall";
-    wall.style.height = step + "px";
-    wall.style.width = step + "px";
-    wall.style.top = i * step + "px";
-    wall.style.left = step * (sceneSize - 1) + "px";
+    // Create east walls
+    var wall = createElement("wall", step, step, step * (sceneSize - 1), i * step);
     scene.appendChild(wall);
     walls.push(wall);
   }
 
-  var player = document.createElement("div");
-  player.className = "player";
-  player.style.height = step + "px";
-  player.style.width = step + "px";
-  player.style.top = step + "px";
-  player.style.left = step + "px";
+  var player = createElement("player", step, step, step, step);
   scene.appendChild(player);
 
-  centerCamera(scene, player)
+  centerCamera(scene, player);
+  updateObjectsVisibility(player, walls, sightRadius);
 
   window.addEventListener("keydown", function(e) {
     switch (e.keyCode) {
       case 38:
         moveElement(player, -1, 0, step, walls)
         centerCamera(scene, player)
+        updateObjectsVisibility(player, walls, sightRadius)
         break;
       case 39:
         moveElement(player, 0, 1, step, walls)
         centerCamera(scene, player)
+        updateObjectsVisibility(player, walls, sightRadius)
         break;
       case 40:
         moveElement(player, 1, 0, step, walls)
         centerCamera(scene, player)
+        updateObjectsVisibility(player, walls, sightRadius)
         break;
       case 37:
         moveElement(player, 0, -1, step, walls)
         centerCamera(scene, player)
+        updateObjectsVisibility(player, walls, sightRadius)
         break;
       default:
         break;
