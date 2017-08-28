@@ -44,10 +44,11 @@ function createElement(className, height, width, x, y) {
 }
 
 function getDistance (element1, element2) {
-  var element1X = parseInt(element1.style.left);
-  var element1Y = parseInt(element1.style.top);
-  var element2X = parseInt(element2.style.left);
-  var element2Y = parseInt(element2.style.top);
+  var element1X = parseInt(element1.style.left) + parseInt(element1.style.width)/2;
+  var element1Y = parseInt(element1.style.top) + parseInt(element1.style.height)/2;
+  var element2X = parseInt(element2.style.left) + parseInt(element2.style.width)/2;
+  var element2Y = parseInt(element2.style.top) + parseInt(element2.style.height)/2;
+
   return Math.sqrt(Math.pow(element1X - element2X, 2) + Math.pow(element1Y - element2Y, 2));
 }
 
