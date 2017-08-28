@@ -5,16 +5,24 @@ body, html {
   overflow: hidden;
 }
 
+.scene {
+  position: relative;
+}
+
 .player {
-  background-color: red;
+  background-image: url("player.png");
+  background-size: contain;
   position: absolute;
 }
 
 .wall {
-  background-color: black;
+  background-image: url("wall.jpg");
+  background-size: contain;
   position: absolute;
 }
 
-.scene {
-  position: relative;
+.floor {
+  background-image: url("floor.jpg");
+  background-size: contain;
+  position: absolute;
 }

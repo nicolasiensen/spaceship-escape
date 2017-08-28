@@ -71,25 +71,38 @@ window.onload = function() {
   document.body.appendChild(scene);
 
   var walls = [];
+  var floor = [];
 
   for (var i = 1; i < sceneSize - 1; i++) {
+    for (var j = 1; j < sceneSize - 1; j++) {
+      var floorPiece = createElement("floor", step, step, step * i, step * j)
+      floorPiece.style.transform = "rotate(" + parseInt(Math.random() * 4) * 90 +  "deg)";
+      floorPiece.style.boxShadow = "inset 0 0 " + step + "px " + step + "px rgba(0, 0, 0, " + [0, 0.25, 0.5][Math.ceil(Math.random() * 3)] + ")";
+      scene.appendChild(floorPiece);
+      floor.push(floorPiece);
+    }
+
     // Create north walls
     var wall = createElement("wall", step, step, i * step, 0);
+    wall.style.transform = "rotate(180deg)";
     scene.appendChild(wall);
     walls.push(wall);
 
     // Create south walls
     var wall = createElement("wall", step, step, i * step, step * (sceneSize - 1));
+    wall.style.transform = "rotate(0deg)";
     scene.appendChild(wall);
     walls.push(wall);
 
     // Create west walls
     var wall = createElement("wall", step, step, 0, i * step);
+    wall.style.transform = "rotate(90deg)";
     scene.appendChild(wall);
     walls.push(wall);
 
     // Create east walls
     var wall = createElement("wall", step, step, step * (sceneSize - 1), i * step);
+    wall.style.transform = "rotate(-90deg)";
     scene.appendChild(wall);
     walls.push(wall);
   }
@@ -98,29 +111,29 @@ window.onload = function() {
   scene.appendChild(player);
 
   centerCamera(scene, player);
-  updateObjectsVisibility(player, walls, sightRadius);
+  updateObjectsVisibility(player, [].concat(walls).concat(floor), sightRadius);
 
   window.addEventListener("keydown", function(e) {
     switch (e.keyCode) {
       case 38:
         moveElement(player, -1, 0, step, walls)
         centerCamera(scene, player)
-        updateObjectsVisibility(player, walls, sightRadius)
+        updateObjectsVisibility(player, [].concat(walls).concat(floor), sightRadius);
         break;
       case 39:
         moveElement(player, 0, 1, step, walls)
         centerCamera(scene, player)
-        updateObjectsVisibility(player, walls, sightRadius)
+        updateObjectsVisibility(player, [].concat(walls).concat(floor), sightRadius);
         break;
       case 40:
         moveElement(player, 1, 0, step, walls)
         centerCamera(scene, player)
-        updateObjectsVisibility(player, walls, sightRadius)
+        updateObjectsVisibility(player, [].concat(walls).concat(floor), sightRadius);
         break;
       case 37:
         moveElement(player, 0, -1, step, walls)
         centerCamera(scene, player)
-        updateObjectsVisibility(player, walls, sightRadius)
+        updateObjectsVisibility(player, [].concat(walls).concat(floor), sightRadius);
         break;
       default:
         break;
