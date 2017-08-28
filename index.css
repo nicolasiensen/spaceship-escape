@@ -10,19 +10,19 @@ body, html {
 }
 
 .player {
-  background-image: url("player.png");
+  background-image: url("images/player.png");
   background-size: contain;
   position: absolute;
 }
 
 .wall {
-  background-image: url("wall.jpg");
+  background-image: url("images/wall.jpg");
   background-size: contain;
   position: absolute;
 }
 
 .floor {
-  background-image: url("floor.jpg");
+  background-image: url("images/floor.jpg");
   background-size: contain;
   position: absolute;
 }
