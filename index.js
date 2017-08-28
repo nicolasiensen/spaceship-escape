@@ -56,8 +56,10 @@ function updateObjectsVisibility(element, objects, sightRadius) {
   for (var i = 0; i < objects.length; i++) {
     var distance = getDistance(element, objects[i]);
 
-    if (distance > sightRadius) {
+    if (distance >= sightRadius) {
       objects[i].style.opacity = 0;
+    } else if (distance < sightRadius * 0.8) {
+      objects[i].style.opacity = 1;
     } else {
       objects[i].style.opacity = 1 - (distance/sightRadius);
     }
