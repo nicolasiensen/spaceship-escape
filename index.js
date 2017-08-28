@@ -3,6 +3,8 @@ var sceneSize = 50;
 var sightRadius = step * 5;
 
 function moveElement(element, top, left, step, colliders) {
+  element.style.transform = "rotate(" + (top === 0 ? 90 * left : Math.max(180 * top, 0)) + "deg)";
+
   var oldTopPosition = element.style.top;
   var oldLeftPosition = element.style.left;
 
